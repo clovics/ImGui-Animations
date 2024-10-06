@@ -34,14 +34,14 @@ namespace fonts {
 
 */
 void WrappingLineSpinnerWithShadow(float deltaTime, ImVec2 windowSize) {
-    const float radius = 6.2f;
-    const float shadowThickness = 2.9f;
-    const float lineWidth = 3.0f;
+    const float radius = 20.2f;
+    const float shadowThickness = 8.9f;
+    const float lineWidth = 8.0f;
     const float speed = 10.5f;
     static float angle = 0.0f;
     static bool reverse = false;
 
-    ImVec2 center(402.9f, 251.0f); // where you want the center of the circle to be
+    ImVec2 center(100.f, 100.0f); // where you want the center of the circle to be
 
     ImGui::GetWindowDrawList()->AddCircle(center, radius, IM_COL32(100, 100, 100, 80), 0, shadowThickness);
 
@@ -74,15 +74,14 @@ void WrappingLineSpinnerWithShadow(float deltaTime, ImVec2 windowSize) {
 // some random Loading screen i saw on a spoofer UI
 // just a circle looping and a % number in the middle
 void RenderLoadingCircle(float radius, float shadowOffset) {
-
-    float loadingProgress = 0.0f;
+    static float loadingProgress = 0.0f; // Make this static to retain value between calls
     float loadingSpeed = 0.5f;
     ImDrawList* drawList = ImGui::GetWindowDrawList();
 
     ImVec2 shadowPosition(400 + shadowOffset, 300 + shadowOffset);
     drawList->AddCircleFilled(shadowPosition, radius + 5.0f, IM_COL32(0, 0, 0, 100)); // Shadow
 
-    ImVec2 center(400, 300);
+    ImVec2 center(400, 100);
     float startAngle = -IM_PI / 2;
     float endAngle = startAngle + 2.0f * IM_PI * loadingProgress;
 
@@ -90,19 +89,16 @@ void RenderLoadingCircle(float radius, float shadowOffset) {
     drawList->PathStroke(IM_COL32(255, 255, 255, 255), false, 3.0f);
 
     loadingProgress += ImGui::GetIO().DeltaTime * loadingSpeed;
-    if (loadingProgress > 1.0f) loadingProgress = 0.0f;
+    if (loadingProgress > 1.0f) loadingProgress = 0.0f; // Reset if it exceeds 1.0
 
     int percent = static_cast<int>(loadingProgress * 100);
-    std::string text = std::to_string(percent) + "%"; // remove percentage sign if u dont want it
+    std::string text = std::to_string(percent) + "%"; // Add percentage sign if desired
 
     ImGui::PushFont(fonts::roboto1); // use your own font for this
-
     ImVec2 textSize = ImGui::CalcTextSize(text.c_str());
-
     ImVec2 textPosition(center.x - textSize.x / 2, center.y - textSize.y / 2);
 
     drawList->AddText(textPosition, IM_COL32(255, 255, 255, 255), text.c_str());
-
     ImGui::PopFont();
 }
 // reported.lol spoofers loading animation remake. 
@@ -117,8 +113,7 @@ void RenderLineLoadingAnimation(float deltaTime) {
     const float lineWidth = 25.0f;      
     const float lineSpeed = 100.0f;      
 
-    ImVec2 rectPosition(ImGui::GetWindowSize().x / 2 - rectSize.x / 2,
-        ImGui::GetWindowSize().y / 2 - rectSize.y / 2);
+    ImVec2 rectPosition(150, 100);
 
     drawList->AddRectFilled(ImVec2(rectPosition.x + shadowOffset, rectPosition.y + shadowOffset),
         ImVec2(rectPosition.x + rectSize.x + shadowOffset, rectPosition.y + rectSize.y + shadowOffset),
